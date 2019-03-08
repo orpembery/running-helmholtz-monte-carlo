@@ -2,28 +2,28 @@ from helmholtz_monte_carlo import error_analysis as err
 import pickle
 
 
-k_range = [30.0,50.0,60.0]
+k_range = [10.0,20.0,30.0]
 
 h_spec = (1.0,-1.5)
 
-J_range = [10]
+J = 10
 
-nu = 2
+nu = 20
 
-M_range = [10]
+M = 10
 
-delta = 2.0
+delta = 1.0
 
 lambda_mult = 1.0
 
-qoi = 'integral'
+qois = ['integral','origin']
 
 # I'm hacking things so that I get the results as they come
 
 for k in k_range:
 
     print('Quasi Monte Carlo')
-    qmc_out = err.investigate_error([k],h_spec,J_range,nu,M_range,'qmc',delta,lambda_mult,qoi,dim=2)
+    qmc_out = err.investigate_error(k,h_spec,J,nu,M,'qmc',delta,lambda_mult,qois,dim=2,display_progress=True)
 
     print('qmc')
     print(qmc_out)
@@ -31,7 +31,7 @@ for k in k_range:
         pickle.dump(qmc_out,f)
 
     print('Monte Carlo')
-    mc_out = err.investigate_error([k],h_spec,J_range,nu,M_range,'mc',delta,lambda_mult,qoi,dim=2)
+    mc_out = err.investigate_error(k,h_spec,J,nu,M,'mc',delta,lambda_mult,qois,dim=2,display_progress=True)
 
     print('mc')
     print(mc_out)
