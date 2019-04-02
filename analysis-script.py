@@ -96,7 +96,10 @@ if __name__ == "__main__":
 
     plt.ylabel('log(QMC Error)')
 
-    plt.title('QMC error for point evaluation at origin for k = 10')
+    if qoi_num == 1:
+        plt.title('QMC error for point evaluation at origin for k = 10')
+    elif qoi_num == 0:
+        plt.title('QMC error for integral of solution for k = 10')
 
 #    plt.plot([np.log(N_list[0]),np.log(N_list[-1])],[np.log(good_errors[0]),np.log(good_errors[0])-(np.log(N_list[-1])-np.log(N_list[0]))])
     
