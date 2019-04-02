@@ -25,17 +25,22 @@ if __name__ == "__main__":
         
         return [approx,error]
 
+    M_large = 6
 
-    with open('k-10.0-h-magnitude-0.25-M-11-all-qmc-samples.pickle','rb') as f:
+    qoi_num = 0 # 0 = point evaluation at the origin, 1 means integral (in current setup), changed from previosu versions
+    
+    num_qois = 1
+    
+    with open('k-5.0-h-magnitude-0.25-M-'+str(M_large)+'-all-qmc-samples.pickle','rb') as f:
         qmc = pickle.load(f)
 
     # Second entry of QMC is a list
-    # Each entry of the list corresponds to a shift
-    # And each is itself a list of length 2
+    # Each entry of the list corresponds to a shift (so 20 entries)
+    # And each is itself a list of length 1
     # Each entry of which corresponds to a different QoI
-    # And each is itself a list of length 1024, containing floats
+    # And each is itself a numpy array of length 64
 
-    num_qois = 2
+
 
     num_shifts = 20
 
@@ -45,11 +50,7 @@ if __name__ == "__main__":
 
     M_low = 2
 
-    M_large = 11
-
     good_errors = []
-
-    qoi_num = 0 # 1 = point evaluation at the origin, 0 means integral (in current setup)
 
     for M in range(M_low,M_large+1):
 
@@ -60,10 +61,12 @@ if __name__ == "__main__":
             all_approximations.append([])
 
             for ishift in range(num_shifts):
-
+                
                 all_approximations[iqoi].append(np.abs(np.array(qmc[1][ishift][iqoi][:(2**M)]).mean()))
 
         M_out = calculate_qmc_error(all_approximations,num_shifts)
+
+        print(M_out)
 
         good_errors.append(M_out[1][qoi_num])
         
@@ -96,7 +99,7 @@ if __name__ == "__main__":
 
     plt.ylabel('log(QMC Error)')
 
-    plt.title('QMC error for point evaluation at origin for k = 10')
+    plt.title('QMC error for point evaluation at origin for k = 5')
 
 #    plt.plot([np.log(N_list[0]),np.log(N_list[-1])],[np.log(good_errors[0]),np.log(good_errors[0])-(np.log(N_list[-1])-np.log(N_list[0]))])
     

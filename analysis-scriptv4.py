@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     M_large = 6
 
-    qoi_num = 1 # 0 = point evaluation at the origin, 1 means integral (in current setup), changed from previosu versions
+    qoi_num = 0 # 0 = point evaluation at the origin, 1 means integral (in current setup), changed from previosu versions
     
 
     with open('k-5.0-h-magnitude-0.25-M-'+str(M_large)+'-all-qmc-samples.pickle','rb') as f:
