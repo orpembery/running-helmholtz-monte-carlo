@@ -2,9 +2,25 @@ from helmholtz_monte_carlo import error_analysis as err
 import pickle
 import numpy as np
 
+# import ctypes
+
+# import os
+
+# petsc_dir = os.environ.get('PETSC_DIR', None)
+
+# petsc_arch = os.environ.get('PETSC_ARCH', None)
+
+# libpetsc_path = os.path.join(petsc_dir, petsc_arch, 'lib', 'libpetsc.so')
+
+# petsc = ctypes.CDLL(libpetsc_path)
+
+# # Do not check validity of address before dereferencing pointers
+
+# petsc.PetscCheckPointerSetIntensity(0)
+
 # All the parameters for assesing convergence
 
-k_list =  [10.0]#[10.0]#,20.0,30.0]
+k_list =  [20.0]#[10.0]#,20.0,30.0]
 
 #ppw = 10
 
