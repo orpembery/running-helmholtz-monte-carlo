@@ -20,7 +20,7 @@ h_fine_spec = (h_coarse_spec[0]/(2.0**h_refinement_levels),h_coarse_spec[1])
 
 #M_refinement_levels = 3
 
-M_high = 5#11#M_low + M_refinement_levels
+M_high = 6#11#M_low + M_refinement_levels
 
 
 # All the parameters for specifying the problem - leave unchanged

@@ -20,7 +20,7 @@ h_fine_spec = (h_coarse_spec[0]/(2.0**h_refinement_levels),h_coarse_spec[1])
 
 #M_refinement_levels = 3
 
-M_high = 5#11#M_low + M_refinement_levels
+M_high = 6#11#M_low + M_refinement_levels
 
 
 # All the parameters for specifying the problem - leave unchanged
@@ -32,7 +32,7 @@ delta = 1.0
 
 lambda_mult = 1.0
 
-qois = ['integral','origin']
+qois = ['origin','integral'] # Have changed the order here from previous versions
 
 # Actually run the code
 for k in k_list:
