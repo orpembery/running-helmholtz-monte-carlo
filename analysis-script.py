@@ -1,7 +1,12 @@
 if __name__ == "__main__":
     import pickle
     import numpy as np
+    import sys
 
+    """First entry is k, second is h magnitude, third is max M, fourth is qoi_num - 0 means integral, 1 means point evaluation at origin."""
+
+    k = sys.argv[1]
+    
     def calculate_qmc_error(all_approximations,nu):
         """ Calculates the QMC error for the inputted list."""
 
@@ -26,7 +31,7 @@ if __name__ == "__main__":
         return [approx,error]
 
 
-    with open('k-10.0-h-magnitude-0.25-M-11-all-qmc-samples.pickle','rb') as f:
+    with open('k-'+k+'-h-magnitude-'+sys.argv[2]+'-M-'+sys.argv[3]+'-all-qmc-samples.pickle','rb') as f:
         qmc = pickle.load(f)
 
     # Second entry of QMC is a list
@@ -97,9 +102,9 @@ if __name__ == "__main__":
     plt.ylabel('log(QMC Error)')
 
     if qoi_num == 1:
-        plt.title('QMC error for point evaluation at origin for k = 10')
+        plt.title('QMC error for point evaluation at origin for k = '+k)
     elif qoi_num == 0:
-        plt.title('QMC error for integral of solution for k = 10')
+        plt.title('QMC error for integral of solution for k = '+k)
 
 #    plt.plot([np.log(N_list[0]),np.log(N_list[-1])],[np.log(good_errors[0]),np.log(good_errors[0])-(np.log(N_list[-1])-np.log(N_list[0]))])
     

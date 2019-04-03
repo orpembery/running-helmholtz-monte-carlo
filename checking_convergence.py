@@ -1,16 +1,21 @@
 from helmholtz_monte_carlo import error_analysis as err
 import pickle
 import numpy as np
+import sys
+
+""" First entry is k, second is number of h refinement levels, also determines fine grid for doing QMC convergence calculations."""
 
 # All the parameters for assesing convergence
 
-k_list =  [5.0]#[10.0]#,20.0,30.0]
+k_list =  [float(sys.argv[1])]#[5.0]#[10.0]#,20.0,30.0]
+
+
 
 #ppw = 10
 
 h_coarse_spec = (1.0,-1.5)#(2.0*np.pi/ppw,-1.0)
 
-h_refinement_levels = 2
+h_refinement_levels = int(sys.argv[2])
 
 h_fine_spec = (h_coarse_spec[0]/(2.0**h_refinement_levels),h_coarse_spec[1])
 
@@ -20,7 +25,7 @@ h_fine_spec = (h_coarse_spec[0]/(2.0**h_refinement_levels),h_coarse_spec[1])
 
 #M_refinement_levels = 3
 
-M_high = 5#11#M_low + M_refinement_levels
+M_high = 11#M_low + M_refinement_levels
 
 
 # All the parameters for specifying the problem - leave unchanged
