@@ -3,7 +3,7 @@ if __name__ == "__main__":
     import numpy as np
     import sys
 
-    """First entry is k, second is h magnitude, third is max M, fourth is qoi_num - 0 means integral, 1 means point evaluation at origin."""
+    """First entry is k, second is h magnitude, third is max M, fourth is qoi_num - 0 means integral, 1 means point evaluation at origin; ffifth is number of shifts"""
 
     k = sys.argv[1]
     
@@ -31,7 +31,7 @@ if __name__ == "__main__":
         return [approx,error]
 
 
-    with open('k-'+k+'-h-magnitude-'+sys.argv[2]+'-M-'+sys.argv[3]+'-all-qmc-samples.pickle','rb') as f:
+    with open('k-'+k+'-h-magnitude-'+sys.argv[2]+'-M-'+sys.argv[3]+'-shifts-'+sys.argv[5]+'-all-qmc-samples.pickle','rb') as f:
         qmc = pickle.load(f)
 
     # Second entry of QMC is a list
@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     num_qois = 2
 
-    num_shifts = 20
+    num_shifts = int(sys.argv[5])
 
     all_samples = qmc[1]
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     M_low = 2
 
-    M_large = 11
+    M_large = int(sys.argv[3])
 
     good_errors = []
 

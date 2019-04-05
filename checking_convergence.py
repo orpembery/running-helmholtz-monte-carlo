@@ -2,8 +2,9 @@ from helmholtz_monte_carlo import error_analysis as err
 import pickle
 import numpy as np
 import sys
+import firedrake as fd
 
-""" First entry is k, second is number of h refinement levels, also determines fine grid for doing QMC convergence calculations."""
+""" First entry is k, second is number of h refinement levels, also determines fine grid for doing QMC convergence calculations, third entry is M, where number of QMC points is 2**M, fourth entry is number of shifts."""
 
 # All the parameters for assesing convergence
 
@@ -25,13 +26,13 @@ h_fine_spec = (h_coarse_spec[0]/(2.0**h_refinement_levels),h_coarse_spec[1])
 
 #M_refinement_levels = 3
 
-M_high = 11#M_low + M_refinement_levels
+M_high = int(sys.argv[3])#3#11#M_low + M_refinement_levels
 
 
 # All the parameters for specifying the problem - leave unchanged
 J = 10
 
-nu = 20
+nu = int(sys.argv[4])
 
 delta = 1.0
 
@@ -49,11 +50,13 @@ for k in k_list:
 
     M = M_high
        
-    qmc_out = err.investigate_error(k,h_spec,J,nu,M,'qmc',delta,lambda_mult,qois,dim=2,display_progress=True)
+    qmc_out = err.investigate_error(k,h_spec,J,nu,M,'qmc',delta,lambda_mult,qois,num_spatial_cores=1,dim=2,display_progress=True)
 
     #print(qmc_out)
-    with open('k-'+str(k)+'-h-magnitude-'+str(h_spec[0])+'-M-'+str(M)+'-all-qmc-samples.pickle','wb') as f:
-        pickle.dump(qmc_out,f)
+    if fd.COMM_WORLD.rank == 0:
+        with open('k-'+str(k)+'-h-magnitude-'+str(h_spec[0])+'-M-'+str(M)+'-shifts-'+str(nu)+'-all-qmc-samples.pickle','wb') as f:
+            print('dumped!')
+            pickle.dump(qmc_out,f)
         
     # Then fix number of QMC points and vary h
 
