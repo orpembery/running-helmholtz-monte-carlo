@@ -3,6 +3,10 @@ import pickle
 import numpy as np
 import sys
 import firedrake as fd
+from firedrake_complex_hacks import balena_hacks
+
+balena_hacks.fix_mesh_generation_time()
+
 
 """ First entry is k, second is number of h refinement levels, also determines fine grid for doing QMC convergence calculations, third entry is M, where number of QMC points is 2**M, fourth entry is number of shifts."""
 
