@@ -1,4 +1,4 @@
-from helmholtz_monte_carlo import error_analysis as err
+from helmholtz_monte_carlo import generate samples as gen
 import pickle
 import numpy as np
 import sys
@@ -50,7 +50,7 @@ for k in k_list:
 
     M = M_high
        
-    qmc_out = err.investigate_error(k,h_spec,J,nu,M,'qmc',delta,lambda_mult,qois,num_spatial_cores=1,dim=2,display_progress=True)
+    qmc_out = gen.generate_samples(k,h_spec,J,nu,M,'qmc',delta,lambda_mult,qois,num_spatial_cores=1,dim=2,display_progress=True)
 
     #print(qmc_out)
     if fd.COMM_WORLD.rank == 0:
@@ -67,7 +67,7 @@ for k in k_list:
         
         h_spec = (h_coarse_spec[0]/(2.0**h_refinement),h_coarse_spec[1])
 
-        qmc_out = err.investigate_error(k,h_spec,J,nu,M,'qmc',delta,lambda_mult,qois,dim=2,display_progress=True)
+        qmc_out = gen.generate_samples(k,h_spec,J,nu,M,'qmc',delta,lambda_mult,qois,dim=2,display_progress=True)
 
         #print(qmc_out)
         with open('k-'+str(k)+'-h-magnitude-'+str(h_spec[0])+'-M-'+str(M)+'-all-qmc-samples.pickle','wb') as f:
