@@ -19,12 +19,13 @@ delta
 lambda_mult
 j_scaling
 dim
+on_balena
 
 All subsequent arguments should be strings, giving the names of the qois to consider
 """
-quantity_names = ['k','h_levels','M_high','nu','J','delta','lambda_mult','j_scaling','dim','qois']
+quantity_names = ['k','h_levels','M_high','nu','J','delta','lambda_mult','j_scaling','dim','on_balena','qois']
 
-num_non_qoi_quants = 9 # Change this if more input arguments added
+num_non_qoi_quants = 10 # Change this if more input arguments added
 
 quants = { quantity_names[ii]:sys.argv[ii+1] for ii in range(num_non_qoi_quants)}
 
@@ -50,6 +51,13 @@ quants['j_scaling'] = float(quants['j_scaling'])
 
 quants['dim'] = int(quants['dim'])
 
+quants['on_balena'] = bool(int(quants['on_balena']))
+
+
+if on_balena:
+        print('loading module')
+        from firedrake_complex_hacks import balena_hacks
+        balena_hacks.fix_mesh_generation_time()
 
 # Strategy for saving the files:
 # 1. Create a uniquely named folder, with name of the form: properties, hash, date/time
