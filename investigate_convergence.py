@@ -54,7 +54,7 @@ quants['dim'] = int(quants['dim'])
 quants['on_balena'] = bool(int(quants['on_balena']))
 
 
-if on_balena:
+if quants['on_balena']:
         print('loading module')
         from firedrake_complex_hacks import balena_hacks
         balena_hacks.fix_mesh_generation_time()
