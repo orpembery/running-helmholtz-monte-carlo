@@ -40,28 +40,6 @@ if quants['on_balena']:
 #2. Find the folders corresponding to all the parameters we want (throw a question if there's more than one exact match - default is to take the newest
 # Do the analysis required (probably the same plots we have at the moment, just including everything in the title)
 
-# Add all values to start of folder name
-folder_name = name_writing(quants)
-
-# Get git hash
-git_hash = subprocess.run("git rev-parse HEAD", shell=True,
-                          stdout=subprocess.PIPE)
-# help from https://stackoverflow.com/a/6273618
-folder_name += '-git-hash-' + git_hash.stdout.decode('UTF-8')[:-1][:6]
-
-# Get current date and time
-# This initialises the object. I don't understand why this is
-# necessary.
-date_time = datetime.datetime(1,1,1)
-folder_name += '-' + date_time.utcnow().isoformat()
-
-folder_name += '/'
-
-mkdir(folder_name)
-
-print(folder_name)
-
-exit
 
 h_coarse_spec = (1.0,-1.5)
 
@@ -82,5 +60,25 @@ for h_refinement in range(quants['h_levels']):
     qmc_out = gen.generate_samples(k=k,h_spec=h_spec,J=quants['J'],nu=quants['nu'],M=quants['M_high'],point_generation_method='qmc',delta=quants['delta'],lambda_mult=quants['lambda_mult'],j_scaling=quants['j_scaling'],qois=quants['qois'],num_spatial_cores=num_spatial_cores,dim=dim,display_progress=True)
     
     if fd.COMM_WORLD.rank == 0:
-        with open('./' + folder_name + 'output-h_magnitude-' +str(h_spec[0]) + '.pickle','wb') as f:
-            pickle.dump(qmc_out,f)
+        # Add all values to start of folder name
+        folder_name = name_writing(quants)
+
+	# Get git hash
+	git_hash = subprocess.run("git rev-parse HEAD", shell=True,
+				      stdout=subprocess.PIPE)
+        # help from https://stackoverflow.com/a/6273618
+        folder_name += '-git-hash-' + git_hash.stdout.decode('UTF-8')[:-1][:6]
+
+	# Get current date and time
+	# This initialises the object. I don't understand why this is
+	# necessary.
+	date_time = datetime.datetime(1,1,1)
+	folder_name += '-' + date_time.utcnow().isoformat()
+
+	folder_name += '/'
+
+	mkdir(folder_name)
+
+	with open('./' + folder_name + 'output-h_magnitude-' +str(h_spec[0]) + '.pickle','wb') as f:
+		pickle.dump(qmc_out,f)
+	    
