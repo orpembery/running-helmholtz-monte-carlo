@@ -26,7 +26,6 @@ All subsequent arguments should be strings, giving the names of the qois to cons
 """
 quants = make_quants(sys.argv[1:])
 
-
 if quants['on_balena']:
         print('loading module')
         from firedrake_complex_hacks import balena_hacks
