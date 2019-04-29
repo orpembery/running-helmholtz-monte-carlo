@@ -7,11 +7,12 @@ from os import mkdir
 import subprocess
 import datetime
 from helmholtz_firedrake import utils
+from name_writing import name_writing, make_quants
 
 """Entries are (in order) (see helmholtz_monte_carlo.generate_samples.generate_samples for an explanation):
 
 k
-number of h levels (also determines fine grid for doing QMC convergence calculations) NOTE, this is a departure form earlier syntax.
+number of h levels (also determines fine grid for doing QMC convergence calculations) NOTE, this is a departure from earlier syntax.
 M (where number of QMC points is 2**M)
 number of shifts
 J
@@ -23,38 +24,10 @@ on_balena
 
 All subsequent arguments should be strings, giving the names of the qois to consider
 """
-quantity_names = ['k','h_levels','M_high','nu','J','delta','lambda_mult','j_scaling','dim','on_balena','qois']
-
-num_non_qoi_quants = 10 # Change this if more input arguments added
-
-quants = { quantity_names[ii]:sys.argv[ii+1] for ii in range(num_non_qoi_quants)}
-
-quants[quantity_names[-1]] = sys.argv[(num_non_qoi_quants+1):] 
-
-# Need to convert things from strings to the right types
-
-quants['k'] = float(quants['k'])
-
-quants['h_levels'] = int(quants['h_levels'])
-
-quants['M_high'] = int(quants['M_high'])
-
-quants['nu'] = int(quants['nu'])
-
-quants['J'] = int(quants['J'])
-
-quants['delta'] = float(quants['delta'])
-
-quants['lambda_mult'] = float(quants['lambda_mult'])
-
-quants['j_scaling'] = float(quants['j_scaling'])
-
-quants['dim'] = int(quants['dim'])
-
-quants['on_balena'] = bool(int(quants['on_balena']))
+quants = make_quants(sys.argv[1:])
 
 
-if on_balena:
+if quants['on_balena']:
         print('loading module')
         from firedrake_complex_hacks import balena_hacks
         balena_hacks.fix_mesh_generation_time()
@@ -69,16 +42,7 @@ if on_balena:
 # Do the analysis required (probably the same plots we have at the moment, just including everything in the title)
 
 # Add all values to start of folder name
-
-folder_name = ''
-
-for key in sorted(quants.keys()):
-    if key is not 'qois':
-        folder_name += '-' + key + '-' + str(quants[key])
-    else:
-        folder_name += '-' + key
-        for string in quants[key]:
-            folder_name += '-' + string
+folder_name = name_writing(quants)
 
 # Get git hash
 git_hash = subprocess.run("git rev-parse HEAD", shell=True,
@@ -93,8 +57,6 @@ date_time = datetime.datetime(1,1,1)
 folder_name += '-' + date_time.utcnow().isoformat()
 
 folder_name += '/'
-
-folder_name = folder_name[1:] # Has erroneous dash at the start
 
 mkdir(folder_name)
 
@@ -119,7 +81,7 @@ for h_refinement in range(quants['h_levels']):
     num_spatial_cores = np.max(1,dofs//50000) # 50,000 is Firedrake's recommendend minimum number of DoFs per node to get good parallel scalability
 
     qmc_out = gen.generate_samples(k=k,h_spec=h_spec,J=quants['J'],nu=quants['nu'],M=quants['M_high'],point_generation_method='qmc',delta=quants['delta'],lambda_mult=quants['lambda_mult'],j_scaling=quants['j_scaling'],qois=quants['qois'],num_spatial_cores=num_spatial_cores,dim=dim,display_progress=True)
-
+    
     if fd.COMM_WORLD.rank == 0:
         with open('./' + folder_name + 'output-h_magnitude-' +str(h_spec[0]) + '.pickle','wb') as f:
             pickle.dump(qmc_out,f)
