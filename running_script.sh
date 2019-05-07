@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for J in 10 20
+for J in 20 #10 20
 do
     for delta in 0.0 1.0
     do

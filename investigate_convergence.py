@@ -67,7 +67,8 @@ for h_refinement in range(quants['h_levels']):
 
 	# Get git hash
         git_hash = subprocess.run("git rev-parse HEAD", shell=True,
-				  stdout=subprocess.PIPE)
+                                  stdout=subprocess.PIPE)
+
         # help from https://stackoverflow.com/a/6273618
         folder_name += '-git-hash-' + git_hash.stdout.decode('UTF-8')[:-1][:6]
 
@@ -82,5 +83,4 @@ for h_refinement in range(quants['h_levels']):
         mkdir(folder_name)
 
         with open('./' + folder_name + 'output-h_magnitude-' +str(h_spec[0]) + '.pickle','wb') as f:
-            pickle.dump(qmc_out,f)
-	    
+                pickle.dump(qmc_out,f)
