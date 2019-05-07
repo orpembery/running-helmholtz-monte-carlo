@@ -64,21 +64,21 @@ for h_refinement in range(quants['h_levels']):
         folder_name = name_writing(quants)
 
 	# Get git hash
-	git_hash = subprocess.run("git rev-parse HEAD", shell=True,
-				      stdout=subprocess.PIPE)
+        git_hash = subprocess.run("git rev-parse HEAD", shell=True,
+                                  stdout=subprocess.PIPE)
         # help from https://stackoverflow.com/a/6273618
         folder_name += '-git-hash-' + git_hash.stdout.decode('UTF-8')[:-1][:6]
 
 	# Get current date and time
 	# This initialises the object. I don't understand why this is
 	# necessary.
-	date_time = datetime.datetime(1,1,1)
-	folder_name += '-' + date_time.utcnow().isoformat()
+        date_time = datetime.datetime(1,1,1)
+        folder_name += '-' + date_time.utcnow().isoformat()
 
-	folder_name += '/'
+        folder_name += '/'
 
-	mkdir(folder_name)
+        mkdir(folder_name)
 
-	with open('./' + folder_name + 'output-h_magnitude-' +str(h_spec[0]) + '.pickle','wb') as f:
-		pickle.dump(qmc_out,f)
+        with open('./' + folder_name + 'output-h_magnitude-' +str(h_spec[0]) + '.pickle','wb') as f:
+                pickle.dump(qmc_out,f)
 	    
