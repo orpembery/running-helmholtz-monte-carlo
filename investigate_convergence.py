@@ -25,7 +25,7 @@ on_balena
 All subsequent arguments should be strings, giving the names of the qois to consider
 """
 quants = make_quants(sys.argv[1:])
-
+print(quants)
 if quants['on_balena']:
         print('loading module')
         from firedrake_complex_hacks import balena_hacks
@@ -55,7 +55,9 @@ for h_refinement in range(quants['h_levels']):
 
     dofs = (utils.h_to_num_cells(h_spec[0]*k**h_spec[1],dim)+1)**dim
 
-    num_spatial_cores = np.max(1,dofs//50000) # 50,000 is Firedrake's recommendend minimum number of DoFs per node to get good parallel scalability
+    # Assumes number of cores is a power of 2
+
+    num_spatial_cores = int(2**np.floor(np.log2(np.max((1,dofs//50000))))) # 50,000 is Firedrake's recommendend minimum number of DoFs per node to get good parallel scalability
 
     qmc_out = gen.generate_samples(k=k,h_spec=h_spec,J=quants['J'],nu=quants['nu'],M=quants['M_high'],point_generation_method='qmc',delta=quants['delta'],lambda_mult=quants['lambda_mult'],j_scaling=quants['j_scaling'],qois=quants['qois'],num_spatial_cores=num_spatial_cores,dim=dim,display_progress=True)
     
@@ -66,6 +68,7 @@ for h_refinement in range(quants['h_levels']):
 	# Get git hash
         git_hash = subprocess.run("git rev-parse HEAD", shell=True,
                                   stdout=subprocess.PIPE)
+
         # help from https://stackoverflow.com/a/6273618
         folder_name += '-git-hash-' + git_hash.stdout.decode('UTF-8')[:-1][:6]
 
@@ -81,4 +84,3 @@ for h_refinement in range(quants['h_levels']):
 
         with open('./' + folder_name + 'output-h_magnitude-' +str(h_spec[0]) + '.pickle','wb') as f:
                 pickle.dump(qmc_out,f)
-	    
