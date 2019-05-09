@@ -51,7 +51,7 @@ on_balena = '*' # This doesn't matter, but needs to go in for completeness
 
 qois = '*' # As above
 
-k_list = [ int(k) for k in sys.argv[9:]]
+k_list = [ float(k) for k in sys.argv[9:]]
 
 for ii_k in range(len(k_list)):
 
