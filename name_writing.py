@@ -26,7 +26,7 @@ def make_quants(sys_args):
     """Takes in sys.argv[1:] (in investigate_convergence), and returns a dict with everything done
     correctly for investigate_convergence."""
 
-    quantity_names = ['k','h_levels','M_high','nu','J','delta','lambda_mult','j_scaling','dim','on_balena','qois']
+    quantity_names = ['k','h_levels','M_high','nu','J','delta','lambda_mult','j_scaling','dim','on_balena','h_coarse_magnitude','h_coarse_scaling','qois']
 
     num_non_qoi_quants = len(quantity_names)-1
 
@@ -57,4 +57,8 @@ def make_quants(sys_args):
     if quants['on_balena'] is not '*': # This is a wildrcard used in analysis
         quants['on_balena'] = bool(int(quants['on_balena']))
 
+    quants['h_coarse_magnitude'] = float(quants['h_coarse_magnitude'])
+
+    quants['h_coarse_scaling'] = float(quants['h_coarse_scaling'])
+        
     return quants
