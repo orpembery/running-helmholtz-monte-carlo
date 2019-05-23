@@ -84,9 +84,7 @@ for h_refinement in range(quants['h_levels']):
     qmc_out = gen.generate_samples(k=k,h_spec=h_spec,J=quants['J'],nu=quants['nu'],M=quants['M_high'],point_generation_method='qmc',delta=quants['delta'],lambda_mult=quants['lambda_mult'],j_scaling=quants['j_scaling'],qois=quants['qois'],num_spatial_cores=num_spatial_cores,dim=dim,display_progress=True)
     
     if fd.COMM_WORLD.rank == 0:
-
-        if h_refinement == 0:
-            
+        if h_refinement == 0:          
                 mkdir(folder_name)
 
         with open('./' + folder_name + 'output-h_magnitude-' +str(h_spec[0]) + '.pickle','wb') as f:

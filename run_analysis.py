@@ -26,6 +26,10 @@ j_scaling - the amount of scaling applied to the oscillatory nature of the spati
 
 dim - the physical dimension of the problem
 
+h_coarse_magnitude - the (absolute) magnitude of how h on the coarsest space scales with k.
+
+h_coarse_scaling - how h on the coarsest space scales with k - the power of k.
+
 The script computes results for all the qois that are available
 
 The remaining arguments are the values of k to use.
@@ -47,11 +51,19 @@ j_scaling = float(sys.argv[7])
 
 dim = int(sys.argv[8])
 
+h_coarse_magnitude = float(sys.argv[9])
+
+h_coarse_scaling = float(sys.argv[10])
+
+next_number = 11
+
+# If altered, don't forget to change entry to make_quants
+
 on_balena = '*' # This doesn't matter, but needs to go in for completeness
 
 qois = '*' # As above
 
-k_list = [ float(k) for k in sys.argv[9:]]
+k_list = [ float(k) for k in sys.argv[next_number:]]
 
 for ii_k in range(len(k_list)):
 
@@ -59,11 +71,11 @@ for ii_k in range(len(k_list)):
 
     # Make the dict
 
-    quants = make_quants([k,h_levels,M,nu,J,delta,lambda_mult,j_scaling,dim,on_balena,qois])
+    quants = make_quants([k,h_levels,M,nu,J,delta,lambda_mult,j_scaling,dim,on_balena,h_coarse_magnitude,h_coarse_scaling,qois])
 
     folder_name_start = name_writing(quants)
 
-    h_magnitude = 2.0**-(float(quants['h_levels'])-1.0)
+    h_magnitude = 2.0**-(float(quants['h_levels'])-1.0)*h_coarse_magnitude
 
     test_filename = folder_name_start + '*/*' + str(h_magnitude) + '*' + '.pickle'
     
@@ -78,11 +90,11 @@ for ii_k in range(len(k_list)):
     
         with open(filename,'rb') as f:
             qmc = pickle.load(f)
-
     # The following is a bit of string hackery to get the names of the qois
     try:
         names_list_old = qoi_names_list
     except NameError:
+        # First time we run through the loop
         names_list_old = 42
         
     qoi_names_list = filename[filename.find('qois-'):filename.find('-git-hash')].split('-')[1:]
@@ -94,16 +106,20 @@ for ii_k in range(len(k_list)):
     # Each entry of the list corresponds to a shift
     # And each is itself a list of length num_qois
     # Each entry of which corresponds to a different QoI
-    # And each is itself a list of length (number of samples), containing floats
+    # And each is itself a list of length (number of samples), containing ????floats
 
     num_qois = len(qmc[1][0])
 
+    # Create storage on first iteration through loop
     if k == k_list[0]:
         error_store = [np.zeros((len(k_list),M+1)) for ii in range(num_qois)]
         
     for this_M in range(M+1):
         # Select the samples for this M
 
+        # qmc_tmp has a similar structure to qmc, but only records
+        # values for this_M. Third entry of qmc_tmp is the samples
+        # themselves, although they're currently not used.
         qmc_tmp = []
 
         qmc_tmp.append(qmc[0])
@@ -111,7 +127,8 @@ for ii_k in range(len(k_list)):
         qmc_tmp.append([])
 
         qmc_tmp.append([])
-        
+
+        # For each shift, and for each QoI, pick up the first 2**this_M samples
         for ii_nu in range(nu):
             samples_tmp = []
             n_tmp = []
@@ -120,7 +137,7 @@ for ii_k in range(len(k_list)):
                 n_tmp.append(qmc[2][ii_nu][ii_qoi][:(2**this_M)])
             qmc_tmp[1].append(samples_tmp)
             qmc_tmp[2].append(n_tmp)
-            
+
         computed_mean_err = mean_and_error(qmc_tmp,'qmc')
 
         for ii_qoi in range(num_qois):
