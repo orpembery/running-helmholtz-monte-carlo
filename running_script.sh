@@ -12,9 +12,9 @@ do
 	    #sbatch jobscript10.slurm ${J} ${delta} ${j_scaling}
             #sbatch jobscript20.slurm ${J} ${delta} ${j_scaling}
             #sbatch jobscript30.slurm ${J} ${delta} ${j_scaling}
-            #sbatch jobscript40.slurm ${J} ${delta} ${j_scaling}
-            sbatch jobscript50.slurm ${J} ${delta} ${j_scaling}
-            sbatch jobscript60.slurm ${J} ${delta} ${j_scaling}
+            sbatch jobscript40.slurm ${J} ${delta} ${j_scaling}
+            #sbatch jobscript50.slurm ${J} ${delta} ${j_scaling}
+            #sbatch jobscript60.slurm ${J} ${delta} ${j_scaling}
 	done
     done
 done
