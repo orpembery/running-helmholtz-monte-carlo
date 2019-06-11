@@ -155,12 +155,12 @@ for ii_qoi in range(num_qois):
     
         error_list = error_store[ii_qoi][ii_k,:]
 
-        # Expect error = C*N^{alpha}, so log(error) = log(C) +alpha*log(N)
+        # Expect error = C*N^{-alpha}, so log(error) = log(C) -alpha*log(N)
 
         fit = np.polyfit(np.log10(N_list),np.log10(error_list),deg=1)
 
         C = 10.0**fit[1]
-        alpha = fit[0]
+        alpha = -fit[0]
 
         qoi_C_alpha[0].append(C)
 
@@ -175,7 +175,7 @@ for ii_qoi in range(num_qois):
 
         x_for_fit = [small_N,big_N]
 
-        y_for_fit = C*np.array([small_N,big_N])**alpha
+        y_for_fit = C*np.array([small_N,big_N])**-alpha
 
         num_sig_fig = 6
 
@@ -202,12 +202,33 @@ for ii_qoi in range(num_qois):
     plt.xlabel('k')
     plt.ylabel('C')
     plt.show()
+
+    # Now fit alpha = alpha_0 - alpha_1 log(k)
+
+    log_k = np.log10(k_list)
+
+    alpha = qoi_C_alpha[1]
+
+    alpha_logk_fit = np.polyfit(log_k,alpha,deg=1)
+
+    alpha_0 = alpha_logk_fit[0]
+
+    alpha_1 = alpha_logk_fit[1]
+
+    # Add best fit line
+    alpha_logk_best_fit = alpha_1 + alpha_0 * log_k
     
-    plt.plot(k_list,qoi_C_alpha[1],'rx')
+
+    plt.semilogx(k_list,alpha_logk_best_fit,'r','--',label='alpha = '+str(alpha_0)[:num_sig_fig]+' - '+str(alpha_1)[:num_sig_fig]+'log(k); alpha_1/alpha_0 = '+str(-alpha_1/alpha_0)[:num_sig_fig])
     plt.title('alpha against k for qoi = '+qoi_name)
     plt.xlabel('k')
     plt.ylabel('alpha')
+    plt.legend()
+    plt.semilogx(k_list,qoi_C_alpha[1],'rx')
     plt.show()
+
+
+    
 
 
 # Need to get qoi strings, and check that they always come in the same order
