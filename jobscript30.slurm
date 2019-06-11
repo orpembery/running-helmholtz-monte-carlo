@@ -2,13 +2,15 @@
 
 #SBATCH --job-name=qmc
 #SBATCH --account=rc-ma1200
-#SBATCH --nodes=1
+#SBATCH --nodes=32
 #SBATCH --ntasks-per-node=16
-#SBATCH --time=24:00:00
+#SBATCH --time=96:00:00
 #SBATCH --error=%j.err
 #SBATCH --output=%j.out
 #SBATCH --partition=batch-all
 
 source /beegfs/scratch/user/s/orp20/own-utilities/helmholtz_firedrake_venv.sh
 
-mpirun -n 16 python /beegfs/scratch/user/s/orp20/running-helmholtz-monte-carlo/investigate_convergence.py 30.0 1 11 20 $1 $2 1.0 $3 2 1 'integral' 'origin' 'top_right' 'gradient_top_right'
+M=`python calculate_m.py 30.0`
+
+mpirun -n 512 python /beegfs/scratch/user/s/orp20/running-helmholtz-monte-carlo/investigate_convergence.py 30.0 1 ${M} 20 $1 $2 1.0 $3 2 1 1.0 -1.5 'integral' 'origin' 'top_right' 'gradient_top_right'
