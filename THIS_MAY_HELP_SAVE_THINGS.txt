@@ -1,0 +1,7 @@
+OK, so I ran dos2unix and managed to wreck the git structure.
+
+There were a bunch of untracked changes in this directory, but I think most of them didn't contain any changes (so I presumed it was a line ending thing).
+
+The crucial thing to know is that the git repo was at 7ac7aed.
+
+So if I can get a new git repo going from there, I might just be able to save this thing.
