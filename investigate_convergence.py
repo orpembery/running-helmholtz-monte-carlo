@@ -23,6 +23,8 @@ dim
 on_balena
 h_coarse_spec[0]
 h_coarse_spec[1]
+nearby_preconditioning
+nearby_preconditioning_proportion
 
 All subsequent arguments should be strings, giving the names of the qois to consider
 """
@@ -70,7 +72,7 @@ for h_refinement in range(quants['h_levels']):
     # First fix h and vary number of QMC points
     
     h_spec = (h_coarse_spec[0]/(2.0**h_refinement),h_coarse_spec[1])
-
+    
     dim = quants['dim']
 
     k = quants['k']
@@ -80,8 +82,19 @@ for h_refinement in range(quants['h_levels']):
     # Assumes number of cores is a power of 2
 
     num_spatial_cores = int(2**np.floor(np.log2(np.max((1,dofs//50000))))) # 50,000 is Firedrake's recommendend minimum number of DoFs per node to get good parallel scalability
-
-    qmc_out = gen.generate_samples(k=k,h_spec=h_spec,J=quants['J'],nu=quants['nu'],M=quants['M_high'],point_generation_method='qmc',delta=quants['delta'],lambda_mult=quants['lambda_mult'],j_scaling=quants['j_scaling'],qois=quants['qois'],num_spatial_cores=num_spatial_cores,dim=dim,display_progress=True)
+     
+    qmc_out = gen.generate_samples(k=k,h_spec=h_spec,J=quants['J'],
+                                   nu=quants['nu'],M=quants['M_high'],
+                                   point_generation_method='qmc',
+                                   delta=quants['delta'],
+                                   lambda_mult=quants['lambda_mult'],
+                                   j_scaling=quants['j_scaling'],
+                                   qois=quants['qois'],
+                                   num_spatial_cores=num_spatial_cores,
+                                   dim=dim,display_progress=True,
+                                   physically_realistic=True,
+                                   nearby_preconditioning=quants['nbpc'],
+                                   nearby_preconditioning_proportion=quants['nbpc_proportion'])
     
     if fd.COMM_WORLD.rank == 0:
         if h_refinement == 0:          
