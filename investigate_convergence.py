@@ -65,9 +65,9 @@ if fd.COMM_WORLD.rank == 0:
 
     
 
-h_coarse_spec = (quants['h_coarse_magnitude'],quants['h_coarse_scaling'])
+h_coarse_spec = (quants['h_coarse_mag'],quants['h_coarse_scal'])
 
-for h_refinement in range(quants['h_levels']):
+for h_refinement in range(quants['num_h']):
 
     # First fix h and vary number of QMC points
     
@@ -88,13 +88,13 @@ for h_refinement in range(quants['h_levels']):
                                    point_generation_method='qmc',
                                    delta=quants['delta'],
                                    lambda_mult=quants['lambda_mult'],
-                                   j_scaling=quants['j_scaling'],
+                                   j_scaling=quants['j_scal'],
                                    qois=quants['qois'],
                                    num_spatial_cores=num_spatial_cores,
                                    dim=dim,display_progress=True,
                                    physically_realistic=False,
                                    nearby_preconditioning=quants['nbpc'],
-                                   nearby_preconditioning_proportion=quants['nbpc_proportion'])
+                                   nearby_preconditioning_proportion=quants['nbpc_prop'])
     
     if fd.COMM_WORLD.rank == 0:
         if h_refinement == 0:          
