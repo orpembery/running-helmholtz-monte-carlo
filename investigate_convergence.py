@@ -92,7 +92,7 @@ for h_refinement in range(quants['h_levels']):
                                    qois=quants['qois'],
                                    num_spatial_cores=num_spatial_cores,
                                    dim=dim,display_progress=True,
-                                   physically_realistic=True,
+                                   physically_realistic=False,
                                    nearby_preconditioning=quants['nbpc'],
                                    nearby_preconditioning_proportion=quants['nbpc_proportion'])
     
