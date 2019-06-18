@@ -29,7 +29,7 @@ nearby_preconditioning_proportion
 All subsequent arguments should be strings, giving the names of the qois to consider
 """
 quants = make_quants(sys.argv[1:])
-print(quants)
+
 if quants['on_balena']:
         print('loading module')
         from firedrake_complex_hacks import balena_hacks
