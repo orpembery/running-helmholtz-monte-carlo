@@ -7,7 +7,7 @@ from os import mkdir
 import subprocess
 import datetime
 from helmholtz_firedrake import utils
-from name_writing import name_writing, make_quants
+from running_helmholtz_monte_carlo.name_writing import name_writing, make_quants
 
 """Entries are (in order) (see helmholtz_monte_carlo.generate_samples.generate_samples for an explanation):
 
