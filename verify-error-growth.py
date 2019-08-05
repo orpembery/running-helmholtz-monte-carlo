@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from calculate_m import calc_M
+from running_helmholtz_monte_carlo.calculate_m import calc_M
 
 k = np.array([10,20,30,40,50,60])#np.arange(10.0,60.0)
 
