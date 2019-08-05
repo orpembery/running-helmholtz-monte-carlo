@@ -1,25 +1,30 @@
 import numpy as np
 import sys
+
+def alpha(k):
+    # These values of alpha were determined from experimental data
+    return 1.4 - 0.18 * np.log(k)
+
+def calc_M(k):
+    # Based on experimental data, we want N to scale like
+    # exp(D\alpha^{-1}).
+
+
+    # Experimental data was gained for 2048 points. We'll do things
+    # so that for k=10.0, we have 2048 points.
+    D = alpha(10.0) * np.log(2048.0)
+
+    k = float(k)
+
+    N = np.exp(D/alpha(k))
+
+    M = int(np.round(np.log2(N)))
+
+    return M
+
+
+
 if __name__ == '__main__':
-
-    def calc_M(k):
-        # Nicked from nbpc library
-
-
-
-        # Based on experimental data, want N to scale like
-        # k^{3.5}. Experimental data was gained for 2048 points, but that
-        # takes a long time So N = D * k**3.5, and we'll do things so that
-        # for k=10.0, we have 128 points.
-        D = 2048/(10**3.5)
-        # So M = log2(D * k^{3.5})
-
-        k = float(k)
-
-        M = int(np.round(np.log2(D*k**3.5)))
-
-        return M
-
     
     print(calc_M(sys.argv[1]))
 
