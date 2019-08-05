@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from calculate_m import calc_M
 
 k = np.array([10,20,30,40,50,60])#np.arange(10.0,60.0)
 
@@ -17,28 +18,25 @@ print(CN)
 
 alpha = alpha0 - alpha1*np.log(k)
 
-N = np.exp(CN / alpha)
+for N in [np.exp(CN / alpha),2.0**np.array([calc_M(this_k) for this_k in k])]:
 
-print(-CN * alpha)
+    print(-CN * alpha)
 
-print(np.log2(N))
+    print(np.log2(N))
 
+    Err = C * N**-alpha
 
+    plt.semilogy(k,N,basey=2.0)
+    plt.xlabel('$k$')
+    plt.ylabel('$N$')
+    plt.show()
 
+    plt.plot(k,Err)
 
-Err = C * N**-alpha
+    plt.xlabel('$k$')
 
-plt.semilogy(k,N,basey=2.0)
-plt.xlabel('$k$')
-plt.ylabel('$N$')
-plt.show()
+    plt.ylabel('Projected QMC error')
 
-plt.plot(k,Err)
+    plt.title(r'Projected QMC error')
 
-plt.xlabel('$k$')
-
-plt.ylabel('Projected QMC error')
-
-plt.title(r'Projected QMC error with number of QMC points scaling ''properly''')
-
-plt.show()
+    plt.show()
