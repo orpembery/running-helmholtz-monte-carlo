@@ -3,7 +3,7 @@ import sys
 
 def alpha(k):
     # These values of alpha were determined from experimental data
-    return 1.4 - 0.18 * np.log(k)
+    return 1.38 - 0.19 * np.log(k)
 
 def calc_M(k):
     # Based on experimental data, we want N to scale like

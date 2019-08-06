@@ -6,11 +6,11 @@ k = np.array([10,20,30,40,50,60])#np.arange(10.0,60.0)
 
 # These values are for point evaluation at the origin now in base e logs
 
-C = 6.5 * 10.0**(-3)
+C = 9 * 10.0**(-3)
 
-alpha0 = 1.35
+alpha0 = 1.3794
 
-alpha1 = 0.17
+alpha1 = 0.1897
 
 CN = np.log(2048.0) * (alpha0 - alpha1*np.log(10.0))
 
