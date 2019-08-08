@@ -5,8 +5,8 @@
 #SBATCH --nodes=32
 #SBATCH --ntasks-per-node=16
 #SBATCH --time=120:00:00
-#SBATCH --error=%j.err
-#SBATCH --output=%j.out
+#SBATCH --error=60.err
+#SBATCH --output=60.out
 #SBATCH --partition=batch-all
 
 source /beegfs/scratch/user/s/orp20/own-utilities/helmholtz_firedrake_venv.sh
@@ -15,4 +15,4 @@ M=`running_helmholtz_monte_carlo/python calculate_m.py 60.0`
 
 pcprop=`python calculate_nbpc_rate.py 60.0`
 
-mpirun -n 512 python /beegfs/scratch/user/s/orp20/running-helmholtz-monte-carlo/investigate_convergence.py 60.0 1 ${M} 1 $1 $2 1.0 $3 2 1 1.0 -1.5 1 pcprop 'integral' 'origin' 'top_right' 'gradient_top_right'
+mpirun -n 512 python /beegfs/scratch/user/s/orp20/running-helmholtz-monte-carlo/investigate_convergence.py 60.0 1 ${M} 1 $1 $2 1.0 $3 2 1 1.0 -1.5 1 ${pcprop} 'integral' 'origin' 'top_right' 'gradient_top_right'
