@@ -8,6 +8,7 @@ import subprocess
 import datetime
 from helmholtz_firedrake import utils
 from running_helmholtz_monte_carlo.name_writing import name_writing, make_quants
+from copy import deepcopy
 
 """Entries are (in order) (see helmholtz_monte_carlo.generate_samples.generate_samples for an explanation):
 
@@ -46,7 +47,11 @@ if quants['on_balena']:
 
 if fd.COMM_WORLD.rank == 0:
         # Add all values to start of folder name
-        folder_name = name_writing(quants)
+        quants_tmp = deepcopy(quants)
+
+        quants_tmp['nbpc_prop'] = np.round(10.0**5.0 * quants_tmp['nbpc_prop']) / 10.0**5.0
+
+        folder_name = name_writing(quants_tmp)
 
 	# Get git hash
         git_hash = subprocess.run("git rev-parse HEAD", shell=True,
