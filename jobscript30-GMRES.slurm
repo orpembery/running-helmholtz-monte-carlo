@@ -4,7 +4,7 @@
 #SBATCH --account=rc-ma1200
 #SBATCH --nodes=32
 #SBATCH --ntasks-per-node=16
-#SBATCH --time=4:00:00
+#SBATCH --time=02:00:00
 #SBATCH --error=30.err
 #SBATCH --output=30.out
 #SBATCH --partition=batch-all
