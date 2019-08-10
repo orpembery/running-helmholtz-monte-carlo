@@ -11,7 +11,7 @@
 
 source /beegfs/scratch/user/s/orp20/own-utilities/helmholtz_firedrake_venv.sh
 
-M=`running_helmholtz_monte_carlo/python calculate_m.py 60.0`
+M=`python running_helmholtz_monte_carlo/calculate_m.py 60.0`
 
 pcprop=`python calculate_nbpc_rate.py 60.0`
 
