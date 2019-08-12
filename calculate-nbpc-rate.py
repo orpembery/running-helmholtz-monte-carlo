@@ -23,5 +23,7 @@ fit_1 = fit[0]
 
 #plt.show()
 
-print(fit_0 + fit_1*k)
+# The above figures were percentages, but we need a proportion
+
+print((fit_0 + fit_1*k)/100.0)
    
