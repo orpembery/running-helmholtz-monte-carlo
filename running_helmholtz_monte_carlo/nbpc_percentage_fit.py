@@ -9,7 +9,7 @@ def nbpc_fit(printing=False):
 
     prop  = [0.24,0.48,0.78]
 
-    plt.plot(k_list,prop,'o')
+    #plt.plot(k_list,prop,'o')
 
     fit = np.polyfit(k_list,prop,deg=1)
 
