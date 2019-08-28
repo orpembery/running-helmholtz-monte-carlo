@@ -25,6 +25,17 @@ def nbpc_fit(printing=False):
     else:
 
         return [fit_0,fit_1]
+
+def make_fits():
+
+    fits = nbpc_fit()
+
+    fit_0 = fits[0]
+
+    fit_1 = fits[1]
+
+    return [fit_0,fit_1]
+
    
 if __name__ == '__main__':
 
