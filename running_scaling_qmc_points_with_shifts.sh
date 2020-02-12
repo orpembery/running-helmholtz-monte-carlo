@@ -2,6 +2,8 @@
 
 # Yes, this will need to be made reproducible....
 
+# This script was NOT used in my thesis, but was for potential computations to assess whether the QMC error is really kept bounded by scaling the QMC points as we do. These computations were not carried out in my thesis.
+
 for J in 10
 do
     for delta in 1.0
